@@ -9,7 +9,7 @@ import Foundation
 
 class UserProfileViewModel: ObservableObject {
     
-    private let userNetworkService = UserNetworkService()
+    private let userNetworkService = MockUserProfileService()
     
     @Published var user: User?
     
@@ -17,23 +17,5 @@ class UserProfileViewModel: ObservableObject {
         userNetworkService.getUser(id: userID, completion: { user in
             self.user = user
         })
-    }
-}
-
-final class UserNetworkService {
-    
-    private let networkService = NetworkService()
-    
-    func getUser(id: Int, completion: @escaping (User?) -> Void){
-        let request = UserRequest(userID: id)
-        networkService.performRequest(request: request) { result in
-            switch result {
-            case .success(let response):
-                completion(response as? User)
-            case .failure(let error):
-                print(error)
-                completion(nil)
-            }
-        }
     }
 }

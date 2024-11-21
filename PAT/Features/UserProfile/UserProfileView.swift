@@ -10,7 +10,7 @@ import SwiftUI
 struct UserProfileView: View {
     
     private let userIDs = [0, 1, 2, 3, 4, 5]
-    @State private var userID: Int?
+    @State private var userID: Int = 0
     @ObservedObject var viewModel: UserProfileViewModel
     
     var body: some View {
@@ -21,7 +21,7 @@ struct UserProfileView: View {
                 Section("User selector:") {
                     Picker("Please choose a userID", selection: $userID) {
                         ForEach(userIDs, id: \.self) {
-                            Text("\($0)")
+                            Text("\($0)").tag($0)
                         }
                     }
                 }
@@ -37,7 +37,6 @@ struct UserProfileView: View {
                 
                 Button(
                     action: {
-                        guard let userID else { return }
                         viewModel.load(userID: userID)
                     },
                     label: {
