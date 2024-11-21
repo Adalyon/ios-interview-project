@@ -9,21 +9,22 @@ import Foundation
 
 class UserProfileViewModel: ObservableObject {
     
-    private let userID: Int
-    private let networkService = NetworkService()
+    private let userNetworkService = UserNetworkService()
+    
     @Published var user: User?
     
-    init(userID: Int) {
-        self.userID = userID
-    }
-    
-    func load() {
-        getUser(id: userID, completion: { user in
+    func load(userID: Int) {
+        userNetworkService.getUser(id: userID, completion: { user in
             self.user = user
         })
     }
+}
+
+final class UserNetworkService {
     
-    private func getUser(id: Int, completion: @escaping (User?) -> Void){
+    private let networkService = NetworkService()
+    
+    func getUser(id: Int, completion: @escaping (User?) -> Void){
         let request = UserRequest(userID: id)
         networkService.performRequest(request: request) { result in
             switch result {

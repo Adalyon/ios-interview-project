@@ -11,9 +11,7 @@ struct ContentView: View {
     
     var body: some View {
         UserProfileView(
-            viewModel: UserProfileViewModel(
-                userID: 1
-            )
+            viewModel: UserProfileViewModel()
         )
     }
 }
